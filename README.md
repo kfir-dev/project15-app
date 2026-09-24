@@ -2,7 +2,7 @@
 
 Flask backend for the Technion DevOps Final Project 15.
 
-This first version provides a clean application factory, database integration, health endpoints, and automated tests. Product, cart, and order resources will be added in the next phases.
+This version provides a clean application factory, database integration, health endpoints, a product API, and automated tests. Cart and order resources will be added in the next phases.
 
 ## Requirements
 
@@ -34,6 +34,8 @@ Available endpoints:
 - `GET /`
 - `GET /health/live`
 - `GET /health/ready`
+- `GET /api/products`
+- `POST /api/products`
 
 ## Test and lint
 
