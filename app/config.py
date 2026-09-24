@@ -12,3 +12,7 @@ class Config:
         "sqlite:///project15.db",
     )
     SQLALCHEMY_TRACK_MODIFICATIONS = False
+    SECURITY_REPORTS_DIR = os.getenv(
+        "SECURITY_REPORTS_DIR",
+        "security-reports",
+    )

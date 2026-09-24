@@ -43,10 +43,14 @@ Available endpoints:
 - `DELETE /api/cart/<user_id>/item/<product_id>`
 - `POST /api/orders`
 - `GET /api/orders/<order_id>`
+- `GET /api/security/sbom`
+- `GET /api/security/scan-report`
 
 `POST /api/cart` expects `user_id`, `product_id`, and `quantity`. Authentication is outside the current project phase, so the user ID is supplied explicitly.
 
 `POST /api/orders` expects `user_id`. It creates an order from that user's cart, stores product and price snapshots, reduces stock, and clears the cart.
+
+Security report endpoints read real JSON artifacts from `SECURITY_REPORTS_DIR`. The pipeline will write `sbom.json` and `scan-report.json` to that directory. Until a report exists, the matching endpoint returns `404` instead of fabricated data.
 
 ## Test and lint
 

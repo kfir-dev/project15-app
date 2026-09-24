@@ -11,8 +11,9 @@ class TestConfig(Config):
 
 
 @pytest.fixture()
-def client():
+def client(tmp_path):
     app = create_app(TestConfig)
+    app.config["SECURITY_REPORTS_DIR"] = str(tmp_path / "security-reports")
 
     with app.app_context():
         db.create_all()

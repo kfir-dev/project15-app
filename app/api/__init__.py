@@ -5,6 +5,7 @@ from app.api.cart import CartItemResource, CartResource, UserCartResource
 from app.api.health import LiveResource, ReadyResource, ServiceInfoResource
 from app.api.orders import OrderListResource, OrderResource
 from app.api.products import ProductListResource, ProductResource
+from app.api.security_reports import SbomResource, ScanReportResource
 
 
 api_blueprint = Blueprint("api", __name__)
@@ -23,3 +24,5 @@ api.add_resource(
 )
 api.add_resource(OrderListResource, "/api/orders")
 api.add_resource(OrderResource, "/api/orders/<int:order_id>")
+api.add_resource(SbomResource, "/api/security/sbom")
+api.add_resource(ScanReportResource, "/api/security/scan-report")
