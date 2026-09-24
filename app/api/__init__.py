@@ -3,6 +3,7 @@ from flask_restful import Api
 
 from app.api.cart import CartItemResource, CartResource, UserCartResource
 from app.api.health import LiveResource, ReadyResource, ServiceInfoResource
+from app.api.orders import OrderListResource, OrderResource
 from app.api.products import ProductListResource, ProductResource
 
 
@@ -20,3 +21,5 @@ api.add_resource(
     CartItemResource,
     "/api/cart/<int:user_id>/item/<int:product_id>",
 )
+api.add_resource(OrderListResource, "/api/orders")
+api.add_resource(OrderResource, "/api/orders/<int:order_id>")

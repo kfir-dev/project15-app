@@ -2,7 +2,7 @@
 
 Flask backend for the Technion DevOps Final Project 15.
 
-This version provides a clean application factory, database integration, health endpoints, product and cart APIs, and automated tests. Order resources will be added in the next phase.
+This version provides a clean application factory, database integration, health endpoints, product, cart, and order APIs, and automated tests.
 
 ## Requirements
 
@@ -41,8 +41,12 @@ Available endpoints:
 - `POST /api/cart`
 - `GET /api/cart/<user_id>`
 - `DELETE /api/cart/<user_id>/item/<product_id>`
+- `POST /api/orders`
+- `GET /api/orders/<order_id>`
 
 `POST /api/cart` expects `user_id`, `product_id`, and `quantity`. Authentication is outside the current project phase, so the user ID is supplied explicitly.
+
+`POST /api/orders` expects `user_id`. It creates an order from that user's cart, stores product and price snapshots, reduces stock, and clears the cart.
 
 ## Test and lint
 
