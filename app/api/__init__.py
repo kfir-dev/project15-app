@@ -1,6 +1,7 @@
 from flask import Blueprint
 from flask_restful import Api
 
+from app.api.cart import CartItemResource, CartResource, UserCartResource
 from app.api.health import LiveResource, ReadyResource, ServiceInfoResource
 from app.api.products import ProductListResource, ProductResource
 
@@ -13,3 +14,9 @@ api.add_resource(LiveResource, "/health/live")
 api.add_resource(ReadyResource, "/health/ready")
 api.add_resource(ProductListResource, "/api/products")
 api.add_resource(ProductResource, "/api/products/<int:product_id>")
+api.add_resource(CartResource, "/api/cart")
+api.add_resource(UserCartResource, "/api/cart/<int:user_id>")
+api.add_resource(
+    CartItemResource,
+    "/api/cart/<int:user_id>/item/<int:product_id>",
+)
