@@ -36,6 +36,8 @@ Available endpoints:
 - `GET /health/ready`
 - `GET /api/products`
 - `POST /api/products`
+- `PUT /api/products/<product_id>`
+- `DELETE /api/products/<product_id>`
 
 ## Test and lint
 

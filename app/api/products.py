@@ -73,3 +73,43 @@ class ProductListResource(Resource):
             return {"message": "Unable to create product"}, 500
 
         return product.to_dict(), 201
+
+
+class ProductResource(Resource):
+    def put(self, product_id):
+        product = db.session.get(Product, product_id)
+        if product is None:
+            return {"message": "Product not found"}, 404
+
+        product_data, validation_error = validate_product_payload(
+            request.get_json(silent=True)
+        )
+        if validation_error:
+            return {"message": validation_error}, 400
+
+        product.name = product_data["name"]
+        product.description = product_data["description"]
+        product.price = product_data["price"]
+        product.stock = product_data["stock"]
+
+        try:
+            db.session.commit()
+        except SQLAlchemyError:
+            db.session.rollback()
+            return {"message": "Unable to update product"}, 500
+
+        return product.to_dict(), 200
+
+    def delete(self, product_id):
+        product = db.session.get(Product, product_id)
+        if product is None:
+            return {"message": "Product not found"}, 404
+
+        try:
+            db.session.delete(product)
+            db.session.commit()
+        except SQLAlchemyError:
+            db.session.rollback()
+            return {"message": "Unable to delete product"}, 500
+
+        return "", 204
