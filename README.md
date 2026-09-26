@@ -65,3 +65,43 @@ The Prometheus endpoint exposes low-cardinality HTTP request counters and latenc
 pytest
 flake8 .
 ```
+
+## Docker Compose
+
+The local container path runs the API with Gunicorn as a non-root user and uses PostgreSQL 15.19. Database migrations run automatically before the API starts.
+
+```bash
+cp .env.example .env
+docker compose config
+docker compose build
+docker compose up -d
+docker compose ps
+```
+
+Runtime checks:
+
+```bash
+curl --fail http://127.0.0.1:5000/health/live
+curl --fail http://127.0.0.1:5000/health/ready
+curl --fail http://127.0.0.1:5000/metrics
+docker compose exec database psql -U project15 -d project15 -c "SELECT version();"
+docker compose exec app id
+```
+
+Stop the environment without deleting its database volume:
+
+```bash
+docker compose down
+```
+
+Delete the local database volume only when a full reset is intended:
+
+```bash
+docker compose down --volumes
+```
+
+Run Hadolint using its pinned container image:
+
+```bash
+docker run --rm -i hadolint/hadolint:v2.14.0-debian < Dockerfile
+```
