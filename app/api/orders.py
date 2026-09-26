@@ -1,6 +1,6 @@
 from decimal import Decimal
 
-from flask import request
+from flask import current_app, request
 from flask_restful import Resource
 from sqlalchemy.exc import SQLAlchemyError
 
@@ -75,6 +75,10 @@ class OrderListResource(Resource):
         except SQLAlchemyError:
             db.session.rollback()
             return {"message": "Unable to create order"}, 500
+
+        current_app.extensions["project15_metrics"][
+            "orders_created"
+        ].inc()
 
         return order.to_dict(), 201
 

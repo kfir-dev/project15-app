@@ -2,7 +2,7 @@
 
 Flask backend for the Technion DevOps Final Project 15.
 
-This version provides a clean application factory, database integration, health endpoints, product, cart, and order APIs, and automated tests.
+This version provides a clean application factory, database integration, health endpoints, product, cart, order, security report APIs, Prometheus metrics, and automated tests.
 
 ## Requirements
 
@@ -45,12 +45,19 @@ Available endpoints:
 - `GET /api/orders/<order_id>`
 - `GET /api/security/sbom`
 - `GET /api/security/scan-report`
+- `GET /metrics`
 
 `POST /api/cart` expects `user_id`, `product_id`, and `quantity`. Authentication is outside the current project phase, so the user ID is supplied explicitly.
 
 `POST /api/orders` expects `user_id`. It creates an order from that user's cart, stores product and price snapshots, reduces stock, and clears the cart.
 
 Security report endpoints read real JSON artifacts from `SECURITY_REPORTS_DIR`. The pipeline will write `sbom.json` and `scan-report.json` to that directory. Until a report exists, the matching endpoint returns `404` instead of fabricated data.
+
+The Prometheus endpoint exposes low-cardinality HTTP request counters and latency histograms using route templates, plus a business counter for successfully created orders:
+
+- `project15_http_requests_total`
+- `project15_http_request_duration_seconds`
+- `project15_orders_created_total`
 
 ## Test and lint
 
