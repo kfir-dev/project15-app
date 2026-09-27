@@ -2,7 +2,7 @@ from decimal import Decimal
 
 from flask import current_app, request
 from flask_restful import Resource
-from sqlalchemy.exc import SQLAlchemyError
+from sqlalchemy.exc import OperationalError, SQLAlchemyError
 
 from app.extensions import db
 from app.models import CartItem, Order, OrderItem
@@ -72,6 +72,9 @@ class OrderListResource(Resource):
         try:
             db.session.add(order)
             db.session.commit()
+        except OperationalError:
+            db.session.rollback()
+            return {"message": "Database unavailable"}, 503
         except SQLAlchemyError:
             db.session.rollback()
             return {"message": "Unable to create order"}, 500

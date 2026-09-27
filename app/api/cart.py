@@ -2,7 +2,7 @@ from decimal import Decimal
 
 from flask import request
 from flask_restful import Resource
-from sqlalchemy.exc import SQLAlchemyError
+from sqlalchemy.exc import OperationalError, SQLAlchemyError
 
 from app.extensions import db
 from app.models import CartItem, Product
@@ -75,6 +75,9 @@ class CartResource(Resource):
 
         try:
             db.session.commit()
+        except OperationalError:
+            db.session.rollback()
+            return {"message": "Database unavailable"}, 503
         except SQLAlchemyError:
             db.session.rollback()
             return {"message": "Unable to add item to cart"}, 500
@@ -118,6 +121,9 @@ class CartItemResource(Resource):
         try:
             db.session.delete(cart_item)
             db.session.commit()
+        except OperationalError:
+            db.session.rollback()
+            return {"message": "Database unavailable"}, 503
         except SQLAlchemyError:
             db.session.rollback()
             return {"message": "Unable to remove item from cart"}, 500

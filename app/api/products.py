@@ -2,7 +2,7 @@ from decimal import Decimal, InvalidOperation
 
 from flask import request
 from flask_restful import Resource
-from sqlalchemy.exc import SQLAlchemyError
+from sqlalchemy.exc import OperationalError, SQLAlchemyError
 
 from app.extensions import db
 from app.models import Product
@@ -68,6 +68,9 @@ class ProductListResource(Resource):
         try:
             db.session.add(product)
             db.session.commit()
+        except OperationalError:
+            db.session.rollback()
+            return {"message": "Database unavailable"}, 503
         except SQLAlchemyError:
             db.session.rollback()
             return {"message": "Unable to create product"}, 500
@@ -94,6 +97,9 @@ class ProductResource(Resource):
 
         try:
             db.session.commit()
+        except OperationalError:
+            db.session.rollback()
+            return {"message": "Database unavailable"}, 503
         except SQLAlchemyError:
             db.session.rollback()
             return {"message": "Unable to update product"}, 500
@@ -108,6 +114,9 @@ class ProductResource(Resource):
         try:
             db.session.delete(product)
             db.session.commit()
+        except OperationalError:
+            db.session.rollback()
+            return {"message": "Database unavailable"}, 503
         except SQLAlchemyError:
             db.session.rollback()
             return {"message": "Unable to delete product"}, 500

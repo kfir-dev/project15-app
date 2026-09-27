@@ -94,6 +94,10 @@ Stop the environment without deleting its database volume:
 docker compose down
 ```
 
+Database connections are checked when reused. During a PostgreSQL outage, API
+database operations return `503` with `{"message":"Database unavailable"}`;
+readiness also returns `503`. Requests can resume when PostgreSQL is ready.
+
 Delete the local database volume only when a full reset is intended:
 
 ```bash

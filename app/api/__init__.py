@@ -1,15 +1,26 @@
 from flask import Blueprint
 from flask_restful import Api
+from sqlalchemy.exc import OperationalError
 
 from app.api.cart import CartItemResource, CartResource, UserCartResource
 from app.api.health import LiveResource, ReadyResource, ServiceInfoResource
 from app.api.orders import OrderListResource, OrderResource
 from app.api.products import ProductListResource, ProductResource
 from app.api.security_reports import SbomResource, ScanReportResource
+from app.extensions import db
+
+
+class ProjectApi(Api):
+    def handle_error(self, error):
+        if isinstance(error, OperationalError):
+            db.session.rollback()
+            return self.make_response({"message": "Database unavailable"}, 503)
+
+        return super().handle_error(error)
 
 
 api_blueprint = Blueprint("api", __name__)
-api = Api(api_blueprint)
+api = ProjectApi(api_blueprint)
 
 api.add_resource(ServiceInfoResource, "/")
 api.add_resource(LiveResource, "/health/live")
