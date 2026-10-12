@@ -39,7 +39,17 @@ jobs:
           output-file: sbom.json
           upload-artifact: false
 
+      - name: Trivy CRITICAL security gate
+        uses: aquasecurity/trivy-action@0.35.0
+        with:
+          image-ref: project15-app:ci
+          scan-type: image
+          format: table
+          severity: CRITICAL
+          exit-code: '1'
+
       - name: Upload security reports
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: security-reports
