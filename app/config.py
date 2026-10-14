@@ -10,7 +10,11 @@ load_dotenv()
 class Config:
     SQLALCHEMY_DATABASE_URI = (
         os.getenv("DATABASE_URL")
-        or (Path("/var/run/secrets/project15/DATABASE_URL").read_text().strip() if Path("/var/run/secrets/project15/DATABASE_URL").is_file() else None)
+        or (
+            Path("/var/run/secrets/project15/DATABASE_URL").read_text().strip()
+            if Path("/var/run/secrets/project15/DATABASE_URL").is_file()
+            else None
+        )
         or "sqlite:///project15.db"
     )
     if os.getenv("KUBERNETES_SERVICE_HOST") and SQLALCHEMY_DATABASE_URI == "sqlite:///project15.db":
