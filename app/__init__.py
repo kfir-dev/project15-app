@@ -15,4 +15,9 @@ def create_app(config_class=Config):
     app.register_blueprint(api_blueprint)
     init_metrics(app)
 
+    @app.after_request
+    def set_content_type_options(response):
+        response.headers["X-Content-Type-Options"] = "nosniff"
+        return response
+
     return app
