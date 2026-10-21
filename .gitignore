@@ -13,3 +13,5 @@ coverage.xml
 .DS_Store
 .vscode/
 security-reports/
+
+/reports/
