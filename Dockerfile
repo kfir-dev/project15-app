@@ -23,7 +23,7 @@ ENV PATH="/opt/venv/bin:$PATH" \
     PYTHONUNBUFFERED=1
 
 RUN apt-get update \
-    && apt-get install -y --no-install-recommends --only-upgrade liblzma5 \
+    && apt-get install -y --no-install-recommends --only-upgrade liblzma5=5.8.1-1+deb13u2 \
     && rm -rf /var/lib/apt/lists/*
 
 RUN groupadd --system --gid 10001 app \
