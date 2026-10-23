@@ -72,7 +72,7 @@ The local container path runs the API with Gunicorn as a non-root user and uses 
 
 ```bash
 cp .env.example .env
-docker compose config
+docker compose config --quiet
 docker compose build
 docker compose up -d
 docker compose ps
@@ -107,5 +107,5 @@ docker compose down --volumes
 Run Hadolint using its pinned container image:
 
 ```bash
-docker run --rm -i hadolint/hadolint:v2.14.0-debian < Dockerfile
+docker run --rm -i --network none --read-only --user "$(id -u):$(id -g)" --cap-drop ALL --security-opt no-new-privileges:true --memory 512m --cpus 1 hadolint/hadolint@sha256:32dac94127fd60b7b7e3fbfc65e1383b9b5e25c9bfd7b8536de7a539fe68a12d hadolint --format json --failure-threshold warning --disable-ignore-pragma - < Dockerfile
 ```
